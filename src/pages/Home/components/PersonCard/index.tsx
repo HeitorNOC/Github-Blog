@@ -1,5 +1,4 @@
 import { Content, DownContent, Logo, MidContent, PersonCardContainer, UpContent } from "./styles";
-import LogoImg from '../../../../assets/logo.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpRightFromSquare, faBuilding, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
@@ -17,7 +16,7 @@ export function PersonCard({
       <Content>
         <UpContent>
           <h2>{name}</h2>
-          <a href="#">GITHUB <FontAwesomeIcon icon={faArrowUpRightFromSquare} color="#3294F8"/> </a>
+          <a href="https://github.com/HeitorNOC">GITHUB <FontAwesomeIcon icon={faArrowUpRightFromSquare} color="#3294F8"/> </a>
         </UpContent>
         <MidContent>
           <p>{bio}</p>

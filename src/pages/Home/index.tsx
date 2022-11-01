@@ -3,7 +3,17 @@ import { Header } from "../../components/Header";
 import { GithubBlogContext } from "../../context/githubContext";
 import { PersonCard } from "./components/PersonCard";
 import { PostCard } from "./components/PostCard";
-import { HomeContainer } from "./styles";
+import { HomeContainer, InputContainer, PostContainerMain } from "./styles";
+
+import *  as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from "react-hook-form";
+
+const searchFormSchema = z.object({
+  query: z.string(),
+})
+
+type SearchFormInputs = z.infer<typeof searchFormSchema>
 
 export function Home() {
 
@@ -11,8 +21,21 @@ export function Home() {
     return context.profile
   })
 
+  const issuesCount = useContextSelector(GithubBlogContext, (context) => {
+    return context.totalCountIssues
+  })
 
-  console.log(profile)
+  /* const fetchTransactions = useContextSelector(TransactionsContext, (context) => {
+    return context.fetchTransactions
+  }) */
+
+  const {
+    register,
+    handleSubmit,
+  } = useForm<SearchFormInputs>({
+    resolver: zodResolver(searchFormSchema)
+  })
+
   return (
 
     <div>
@@ -23,18 +46,32 @@ export function Home() {
         ) : (
           <HomeContainer>
             <PersonCard
-              avatar_url={profile?.avatar_url}
-              bio={profile?.bio}
-              company={profile?.company}
-              followers={profile?.followers}
-              login={profile?.login}
-              name={profile?.name}
+              avatar_url={profile.avatar_url}
+              bio={profile.bio}
+              company={profile.company}
+              followers={profile.followers}
+              login={profile.login}
+              name={profile.name}
+              
             />
-            <div className="beforePosts">
-              <h2>Publicações</h2>
-              <p>6 publicações</p>
+            <div className="main">
+
+              <div className="beforePosts">
+                <h2>Publicações</h2>
+                <p>{issuesCount} publicações</p>
+              </div>
+              <InputContainer  /* onSubmit={handleSubmit(handleSearchTransactions)} */>
+                <input
+                  type="text"
+                  placeholder="Buscar conteúdo"
+                  {...register('query')}
+                />
+              </InputContainer>
+              <PostContainerMain>
+                <PostCard />
+              </PostContainerMain>
             </div>
-            <PostCard />
+
           </HomeContainer>
         )
       }
